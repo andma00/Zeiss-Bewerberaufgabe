@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using App2.Models; 
 using App2.Services;
 
 namespace App2.ViewModels
@@ -14,26 +14,8 @@ namespace App2.ViewModels
     {
         private readonly IExporter _exporter;
 
-        private double? _value1;
-        public double? Value1
-        {
-            get => _value1;
-            set { _value1 = value; OnPropertyChanged(nameof(Value1)); }
-        }
+        public ObservableCollection<MeasurementViewModel> Measurements { get;  set; }
 
-        private double? _value2;
-        public double? Value2
-        {
-            get => _value2;
-            set { _value2 = value; OnPropertyChanged(nameof(Value2)); }
-        }
-
-        private int? _value3;
-        public int? Value3
-        {
-            get => _value3;
-            set { _value3 = value; OnPropertyChanged(nameof(Value3)); }
-        }
 
         public ICommand ProcessAndSaveCommand { get; }
 
@@ -41,24 +23,29 @@ namespace App2.ViewModels
         {
             _exporter = new FileExporter();
 
+            Measurements = new ObservableCollection<MeasurementViewModel>
+            {
+                new MeasurementViewModel { Label = "Wert 1 (Fließkommazahl)" },
+                new MeasurementViewModel { Label = "Wert 2 (Fließkommazahl)" },
+                new MeasurementViewModel { Label = "Wert 3 (Ganzzahl)" }
+            };
+
             ProcessAndSaveCommand = new RelayCommand(ProcessAndSave, CanProcessAndSave);
         }
 
         private bool CanProcessAndSave(object parameter)
         {
-            return Value1.HasValue && Value2.HasValue && Value3.HasValue;
+            return Measurements.All(m => m.Value.HasValue);
         }
 
         private void ProcessAndSave(object parameter)
         {
             try
             {
-                var values = new List<double> { Value1.Value, Value2.Value, (double)Value3.Value };
-
+                var values = Measurements.Select(m => m.Value.Value).ToList();
                 values.Sort();
 
                 _exporter.Export(values);
-
                 MessageBox.Show("Werte erfolgreich verarbeitet und gespeichert.", "Erfolg", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)

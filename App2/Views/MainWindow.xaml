@@ -6,22 +6,24 @@
         xmlns:local="clr-namespace:App2"
         xmlns:viewModels="clr-namespace:App2.ViewModels"
         mc:Ignorable="d"
-        Title="Patienten-Messwerte" Height="250" Width="400">
+        Title="Patienten-Messwerte" Height="264" Width="400">
 
     <Window.DataContext>
         <viewModels:MainViewModel/>
     </Window.DataContext>
 
     <StackPanel Margin="15">
-        <Label Content="_Wert 1 (Fließkommazahl):"/>
-        <TextBox Text="{Binding Value1, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F3}}"/>
+    <ItemsControl ItemsSource="{Binding Measurements}">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Margin="0,5">
+                    <Label Content="{Binding Label}"/>
+                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
-        <Label Content="_Wert 2 (Fließkommazahl):" Margin="0,10,0,0"/>
-        <TextBox Text="{Binding Value2, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F3}}"/>
-
-        <Label Content="_Wert 3 (Ganzzahl):" Margin="0,10,0,0"/>
-        <TextBox Text="{Binding Value3, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <Button Content="_Verarbeiten und Speichern" Command="{Binding ProcessAndSaveCommand}" Margin="0,20,0,0" Padding="5"/>
+    <Button Content="_Verarbeiten und Speichern" Command="{Binding ProcessAndSaveCommand}" Margin="0,20,0,0" Padding="5"/>
     </StackPanel>
 </Window>
