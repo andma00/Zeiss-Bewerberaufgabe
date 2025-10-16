@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace App2.ViewModels
 {
+    /// <summary>
+    /// Serves as a base class for measurement view models, providing common properties and methods for input handling and validation.
+    /// </summary>
     public abstract class MeasurementViewModelBase : INotifyPropertyChanged
     {
         protected string _inputText = "";

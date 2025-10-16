@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace App2.ViewModels
 {
+    /// <summary>
+    /// Represents a view model for handling double measurements, implementing input validation and parsing logic.
+    /// </summary>
     public class DoubleMeasurementViewModel : MeasurementViewModelBase
     {
         private double? _value;
@@ -17,6 +20,10 @@ namespace App2.ViewModels
             }
         }
 
+        /// <summary>
+        /// Validates the given input string and attempts to parse it as a double precision floating-point number.
+        /// Updates the internal state to reflect the parsed value or any validation errors.
+        /// </summary>
         protected override void ValidateAndParseInput(string input)
         {
             if (string.IsNullOrWhiteSpace(input))

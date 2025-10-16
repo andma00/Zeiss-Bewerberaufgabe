@@ -9,7 +9,10 @@ using App2.Services;
 
 namespace App2.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    /// <summary>
+    /// Represents the main view model for managing and processing measurement data in the application.
+    /// </summary>
+    public class MainViewModel
     {
         private readonly IExporter _exporter;
 
@@ -29,7 +32,7 @@ namespace App2.ViewModels
 
             ProcessAndSaveCommand = new RelayCommand(ProcessAndSave, CanProcessAndSave);
         }
-
+        
         private bool CanProcessAndSave(object parameter)
         {
             return Measurements.All(m => !m.HasValidationError && !string.IsNullOrWhiteSpace(m.InputText));
@@ -52,10 +55,11 @@ namespace App2.ViewModels
                     MessageBoxImage.Error);
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 
+    /// <summary>
+    /// Represents a command that can be executed and queried for its availability based on specified logic.
+    /// </summary>
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;

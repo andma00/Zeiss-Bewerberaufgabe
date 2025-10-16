@@ -11,8 +11,15 @@ namespace App2.Services
     using System.IO;
     using System.Linq;
 
+    /// <summary>
+    /// Exports sorted double values to a text file in the user's home directory.
+    /// </summary>
     public class FileExporter : IExporter
     {
+        /// <summary>
+        /// Exports a collection of sorted double values to a text file in the user's home directory.
+        /// </summary>
+        /// <param name="sortedValues">The collection of sorted double values to be exported.</param>
         public void Export(IEnumerable<double> sortedValues)
         {
             string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
