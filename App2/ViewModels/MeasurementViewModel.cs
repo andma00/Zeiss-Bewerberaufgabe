@@ -1,27 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App2.ViewModels
 {
-    public class MeasurementViewModel : INotifyPropertyChanged
+    public abstract class MeasurementViewModelBase : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        protected string _inputText = "";
+        private bool _hasValidationError = false;
+        private string _validationMessage = "";
 
-        private double? _value;
         public string Label { get; set; }
-        public double? Value
+
+        public string InputText
         {
-            get => _value;
+            get => _inputText;
             set
             {
-                _value = value;
-                OnPropertyChanged(nameof(Value));
+                _inputText = value;
+                ValidateAndParseInput(value);
+                OnPropertyChanged(nameof(InputText));
+                OnPropertyChanged(nameof(HasValidationError));
+                OnPropertyChanged(nameof(ValidationMessage));
             }
         }
+
+        public bool HasValidationError
+        {
+            get => _hasValidationError;
+            protected set
+            {
+                _hasValidationError = value;
+                OnPropertyChanged(nameof(HasValidationError));
+            }
+        }
+
+        public string ValidationMessage
+        {
+            get => _validationMessage;
+            protected set
+            {
+                _validationMessage = value;
+                OnPropertyChanged(nameof(ValidationMessage));
+            }
+        }
+        protected abstract void ValidateAndParseInput(string input);
+        public abstract double GetValueAsDouble();
+        public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

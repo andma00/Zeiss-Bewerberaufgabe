@@ -9,25 +9,22 @@ using App2.Services;
 
 namespace App2.ViewModels
 {
-
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly IExporter _exporter;
 
-        public ObservableCollection<MeasurementViewModel> Measurements { get;  set; }
-
-
+        public ObservableCollection<MeasurementViewModelBase> Measurements { get; set; }
         public ICommand ProcessAndSaveCommand { get; }
 
         public MainViewModel()
         {
             _exporter = new FileExporter();
 
-            Measurements = new ObservableCollection<MeasurementViewModel>
+            Measurements = new ObservableCollection<MeasurementViewModelBase>
             {
-                new MeasurementViewModel { Label = "Wert 1 (Fließkommazahl)" },
-                new MeasurementViewModel { Label = "Wert 2 (Fließkommazahl)" },
-                new MeasurementViewModel { Label = "Wert 3 (Ganzzahl)" }
+                new DoubleMeasurementViewModel { Label = "Wert 1 (Fließkommazahl)" },
+                new DoubleMeasurementViewModel { Label = "Wert 2 (Fließkommazahl)" },
+                new IntegerMeasurementViewModel { Label = "Wert 3 (Ganzzahl)" }
             };
 
             ProcessAndSaveCommand = new RelayCommand(ProcessAndSave, CanProcessAndSave);
@@ -35,30 +32,28 @@ namespace App2.ViewModels
 
         private bool CanProcessAndSave(object parameter)
         {
-            return Measurements.All(m => m.Value.HasValue);
+            return Measurements.All(m => !m.HasValidationError && !string.IsNullOrWhiteSpace(m.InputText));
         }
 
         private void ProcessAndSave(object parameter)
         {
             try
             {
-                var values = Measurements.Select(m => m.Value.Value).ToList();
+                var values = Measurements.Select(m => m.GetValueAsDouble()).ToList();
                 values.Sort();
 
                 _exporter.Export(values);
-                MessageBox.Show("Werte erfolgreich verarbeitet und gespeichert.", "Erfolg", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Werte erfolgreich verarbeitet und gespeichert.", "Erfolg", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ein Fehler ist aufgetreten: {ex.Message}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Ein unerwarteter Fehler ist aufgetreten: {ex.Message}", "Fehler", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
     public class RelayCommand : ICommand
@@ -74,6 +69,7 @@ namespace App2.ViewModels
 
         public bool CanExecute(object parameter) => _canExecute == null || _canExecute(parameter);
         public void Execute(object parameter) => _execute(parameter);
+
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }

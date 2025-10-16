@@ -6,24 +6,33 @@
         xmlns:local="clr-namespace:App2"
         xmlns:viewModels="clr-namespace:App2.ViewModels"
         mc:Ignorable="d"
-        Title="Patienten-Messwerte" Height="264" Width="400">
+        Title="Patienten-Messwerte" Height="Auto" SizeToContent="Height" Width="450">
 
     <Window.DataContext>
-        <viewModels:MainViewModel/>
+        <viewModels:MainViewModel />
     </Window.DataContext>
 
     <StackPanel Margin="15">
-    <ItemsControl ItemsSource="{Binding Measurements}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Margin="0,5">
-                    <Label Content="{Binding Label}"/>
-                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+        <ItemsControl ItemsSource="{Binding Measurements}">
+            <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,5">
+                            <Label Content="{Binding Label}" />
+                            <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{Binding ValidationMessage}"
+                                       Foreground="Red"
+                                       FontSize="10"
+                                       Visibility="{Binding HasValidationError}"
+                                       Margin="0,2,0,0" />
+                        </StackPanel>
+                    </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-    <Button Content="_Verarbeiten und Speichern" Command="{Binding ProcessAndSaveCommand}" Margin="0,20,0,0" Padding="5"/>
+        <Button Content="_Verarbeiten und Speichern"
+                Command="{Binding ProcessAndSaveCommand}"
+                Margin="0,20,0,0"
+                Padding="5"
+                Height="30" />
     </StackPanel>
 </Window>
