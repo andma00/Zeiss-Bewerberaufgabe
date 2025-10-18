@@ -4,13 +4,23 @@
 
 Grafische Oberfläche zur Eingabe, Validierung, Sortierung und Speicherung von Patienten-Messwerten.
 
+## Ausführung
+
+---
+1. Öffnen Sie die Lösung `App2.sln` in Visual Studio.
+2. Legen Sie das Startprojekt auf `App2` fest.
+3. Führen Sie die Anwendung aus (F5).
+4. Geben Sie die Messwerte ein und klicken Sie auf „Verarbeiten und speichern“.
+5. Überprüfen Sie das Benutzerverzeichnis auf die Datei `values.txt`, die die sortierten Messwerte enthält.
+
 ## Funktionalitäten
 
 * Eingabe von drei Patienten-Messwerten (zwei Gleitkommazahlen, eine Ganzzahl).
 * Echtzeit-Validierung der Benutzereingaben.
 * Sortierung der Messwerte in aufsteigender Reihenfolge.
 * Speicherung der Messwerte in einer Textdatei (werte.txt) im Benutzerverzeichnis.
-* Fehlerbehandlung für unerwartete Fehler während des Speichervorgangs.
+* Fehlerbehandlung für unerwartete Fehler während des Speichervorgangs.#
+
 
 ## Architektur
 

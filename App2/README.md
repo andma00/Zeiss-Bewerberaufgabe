@@ -7,6 +7,15 @@
 
 Graphical user interface for entering, validating, sorting, and storing patient measurements.
 
+## How to run
+
+---
+1. Open the solution `App2.sln` in Visual Studio.
+2. Set the startup project to `App2`.
+3. Run the application (F5).
+4. Enter the measurements and click "Process and Save".
+5. Check the user directory for the `values.txt` file containing the sorted measurements.
+
 ## Functionalities
 
 ---
